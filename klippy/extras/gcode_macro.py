@@ -201,12 +201,14 @@ class TemplateWrapperPython:
 
     def _action_blocking(self, func):
         completion = self.printer.get_reactor().completion()
+
         def run():
             try:
                 ret = func()
                 completion.complete((False, ret))
             except e:
                 completion.complete((True, e))
+
         t = threading.Thread(target=run, daemon=True)
         t.start()
         [is_exception, ret] = completion.wait()
@@ -272,9 +274,14 @@ class Template:
     def reload(self, script):
         if script.startswith(PYTHON_SCRIPT_PREFIX):
             script = script[len(PYTHON_SCRIPT_PREFIX) :]
-            self.function = TemplateWrapperPython(self.printer, self.env, self.name, script)
+            self.function = TemplateWrapperPython(
+                self.printer, self.env, self.name, script
+            )
         else:
-            self.function = TemplateWrapperJinja(self.printer, self.env, self.name, script)
+            self.function = TemplateWrapperJinja(
+                self.printer, self.env, self.name, script
+            )
+
 
 # Main gcode macro template tracking
 class PrinterGCodeMacro:
