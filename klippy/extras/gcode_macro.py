@@ -3,7 +3,7 @@
 # Copyright (C) 2018-2021  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import traceback, logging, ast, copy, json
+import traceback, logging, ast, copy, json, threading
 import jinja2, math
 import configfile
 
@@ -142,6 +142,7 @@ class TemplateWrapperPython:
             "wait_while": self._action_wait_while,
             "wait_until": self._action_wait_until,
             "wait_moves": self._action_wait_moves,
+            "blocking": self._action_blocking,
             "sleep": self._action_sleep,
             "set_gcode_variable": self._action_set_gcode_variable,
             "emergency_stop": self.gcode_macro._action_emergency_stop,
@@ -197,6 +198,22 @@ class TemplateWrapperPython:
         if self.toolhead is None:
             self.toolhead = self.printer.lookup_object("toolhead")
         self.toolhead.wait_moves()
+
+    def _action_blocking(self, func):
+        completion = self.printer.get_reactor().completion()
+        def run():
+            try:
+                ret = func()
+                completion.complete((False, ret))
+            except e:
+                completion.complete((True, e))
+        t = threading.Thread(target=run, daemon=True)
+        t.start()
+        [is_exception, ret] = completion.wait()
+        if is_exception:
+            raise ret
+        else:
+            return ret
 
     def _action_sleep(self, timeout):
         reactor = self.printer.get_reactor()
