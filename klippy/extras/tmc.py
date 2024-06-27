@@ -769,6 +769,7 @@ class BaseTMCCurrentHelper:
         self.name = config.get_name().split()[-1]
         self.mcu_tmc = mcu_tmc
         self.fields = mcu_tmc.get_fields()
+        self.step_driver_def = self.step_driver_fetch(config)
 
         # config_{run|hold|home}_current
         # represents an initial value set via config file

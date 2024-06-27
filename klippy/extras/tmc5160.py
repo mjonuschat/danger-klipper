@@ -254,10 +254,20 @@ MAX_CURRENT = 10.000  # Maximum dependent on board, but 10 is safe sanity check
 class TMC5160CurrentHelper(tmc.BaseTMCCurrentHelper):
     def __init__(self, config, mcu_tmc):
         super().__init__(config, mcu_tmc, MAX_CURRENT)
+        config_file = self.printer.lookup_object("configfile")
 
-        self.sense_resistor = config.getfloat(
-            "sense_resistor", 0.075, above=0.0
-        )
+        if self.step_driver_def:
+            self.sense_resistor = self.step_driver_fetch()
+        else:
+            self.sense_resistor = config.getfloat(
+                "sense_resistor", 0.075, above=0.0
+            )
+            config_file.warn(
+                "config",
+                f"No 'stepper_driver_type' defined in config for {self.name}",
+                "Invalid profile name",
+            )
+
         gscaler, irun, ihold = self._calc_current(
             self.req_run_current, self.req_hold_current
         )
