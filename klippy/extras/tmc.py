@@ -5,7 +5,7 @@
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import logging, collections
 import stepper
-
+from . import tmc_defs
 
 ######################################################################
 # Field helpers
@@ -766,10 +766,15 @@ def TMCStealthchopHelper(config, mcu_tmc, tmc_freq):
 class BaseTMCCurrentHelper:
     def __init__(self, config, mcu_tmc, max_current):
         self.printer = config.get_printer()
+        self.config_file = self.printer.lookup_object("configfile")
         self.name = config.get_name().split()[-1]
         self.mcu_tmc = mcu_tmc
         self.fields = mcu_tmc.get_fields()
-        self.step_driver_def = self.step_driver_fetch(config)
+
+        self.stepper_driver_type = config.get("stepstick_type", None)
+        self.sense_resistor = tmc_defs.STEPSTICK_SENSE_RESISTORS.get(
+            self.stepper_driver_type
+        )
 
         # config_{run|hold|home}_current
         # represents an initial value set via config file

@@ -119,7 +119,15 @@ class TMC2660CurrentHelper(tmc.BaseTMCCurrentHelper):
         super().__init__(config, mcu_tmc, MAX_CURRENT)
 
         self.current = self.req_run_current
-        self.sense_resistor = config.getfloat("sense_resistor")
+
+        config_sense = config.getfloat("sense_resistor")
+        if not self.sense_resistor:
+            self.sense_resistor = config_sense
+            self.config_file.warn(
+                "config",
+                f"No 'stepper_driver_type' defined in config for {self.name}, Defaulted to {config_sense} ohm sense resistor",
+                "",
+            )
         vsense, cs = self._calc_current(self.req_run_current)
         self.fields.set_field("cs", cs)
         self.fields.set_field("vsense", vsense)
