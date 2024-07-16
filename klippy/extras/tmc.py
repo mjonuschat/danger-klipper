@@ -771,9 +771,28 @@ class BaseTMCCurrentHelper:
         self.mcu_tmc = mcu_tmc
         self.fields = mcu_tmc.get_fields()
 
-        self.stepper_driver_type = config.get("stepstick_type", None)
-        self.sense_resistor = tmc_defs.STEPSTICK_SENSE_RESISTORS.get(
-            self.stepper_driver_type
+        stepper_driver_type = config.get("stepstick_type", None)
+        sense_resistor_from_driver = tmc_defs.STEPSTICK_SENSE_RESISTORS.get(
+            stepper_driver_type
+        )
+        override_sense_resistor = config.getfloat(
+            "sense_resistor",
+            None,
+            minval=0.0,
+        )
+        if (
+            override_sense_resistor is None
+            and sense_resistor_from_driver is not None
+        ):
+            self.sense_resistor = self.DEFAULT_SENSE_RESISTOR
+            self.config_file.warn(
+                "config",
+                f"No 'stepper_driver_type' defined in config for {self.name}, Defaulted to {self.sense_resistor} ohm sense resistor.",
+                "",
+            )
+
+        self.sense_resistor = (
+            override_sense_resistor or sense_resistor_from_driver
         )
 
         # config_{run|hold|home}_current
