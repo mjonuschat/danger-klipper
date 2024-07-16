@@ -772,9 +772,11 @@ class BaseTMCCurrentHelper:
         self.fields = mcu_tmc.get_fields()
 
         stepper_driver_type = config.get("stepstick_type", None)
-        sense_resistor_from_driver = tmc_defs.STEPSTICK_DEFS.get(
-            stepper_driver_type
+
+        sense_resistor_from_driver, step_driver_max_current = (
+            tmc_defs.STEPSTICK_DEFS.get(stepper_driver_type)
         )
+
         override_sense_resistor = config.getfloat(
             "sense_resistor",
             None,
@@ -792,7 +794,19 @@ class BaseTMCCurrentHelper:
             )
 
         else:
-            override_sense_resistor or sense_resistor_from_driver
+            self.sense_resistor = (
+                override_sense_resistor or sense_resistor_from_driver
+            )
+
+        step_driver_max_current_override = config.getboolean(
+            "step_driver_max_current_override", False
+        )
+
+        if (
+            step_driver_max_current is not None
+            and step_driver_max_current_override is False
+        ):
+            max_current = step_driver_max_current
 
         # config_{run|hold|home}_current
         # represents an initial value set via config file
