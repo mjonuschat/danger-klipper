@@ -201,12 +201,19 @@ class TMC2130CurrentHelper(tmc.BaseTMCCurrentHelper):
     def __init__(self, config, mcu_tmc):
         super().__init__(config, mcu_tmc, MAX_CURRENT)
 
-        config_sense = config.getfloat("sense_resistor", 0.110, above=0.0)
-        if not self.sense_resistor:
+        config_sense = config.getfloat("sense_resistor", None, above=0.0)
+
+        if config_sense is not None:
             self.sense_resistor = config_sense
+        elif self.sense_resistor is not None:
+            self.sense_resistor = self.sense_resistor
+        else:
+            self.sense_resistor = 0.110
+
+        if config_sense is not None and config_sense == self.sense_resistor:
             self.config_file.warn(
                 "config",
-                f"No 'stepper_driver_type' defined in config for {self.name}, Defaulted to {config_sense} ohm sense resistor",
+                f"No 'stepper_driver_type' defined in config for {self.name}, Defaulted to {config_sense} ohm sense resistor.",
                 "",
             )
 
