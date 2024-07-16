@@ -38,12 +38,15 @@ class ConfigWrapper:
         above=None,
         below=None,
         note_valid=True,
+        return_default_used=False,
     ):
         if not self.fileconfig.has_option(self.section, option):
             if default is not sentinel:
                 if note_valid and default is not None:
                     acc_id = (self.section.lower(), option.lower())
                     self.access_tracking[acc_id] = default
+                if return_default_used:
+                    return default, True
                 return default
             raise error(
                 "Option '%s' in section '%s' must be specified"
@@ -80,6 +83,8 @@ class ConfigWrapper:
                 "Option '%s' in section '%s' must be below %s"
                 % (option, self.section, below)
             )
+        if return_default_used:
+            return v, False
         return v
 
     def get(self, option, default=sentinel, note_valid=True):
@@ -94,6 +99,7 @@ class ConfigWrapper:
         minval=None,
         maxval=None,
         note_valid=True,
+        return_default_used=False,
     ):
         return self._get_wrapper(
             self.fileconfig.getint,
@@ -102,6 +108,7 @@ class ConfigWrapper:
             minval,
             maxval,
             note_valid=note_valid,
+            return_default_used=return_default_used,
         )
 
     def getfloat(
@@ -113,6 +120,7 @@ class ConfigWrapper:
         above=None,
         below=None,
         note_valid=True,
+        return_default_used=False,
     ):
         return self._get_wrapper(
             self.fileconfig.getfloat,
@@ -123,6 +131,7 @@ class ConfigWrapper:
             above,
             below,
             note_valid=note_valid,
+            return_default_used=return_default_used,
         )
 
     def getboolean(self, option, default=sentinel, note_valid=True):
@@ -150,6 +159,7 @@ class ConfigWrapper:
         count=None,
         parser=str,
         note_valid=True,
+        return_default_used=False,
     ):
         def lparser(value, pos):
             if len(value.strip()) == 0:
@@ -176,7 +186,13 @@ class ConfigWrapper:
         )
 
     def getlist(
-        self, option, default=sentinel, sep=",", count=None, note_valid=True
+        self,
+        option,
+        default=sentinel,
+        sep=",",
+        count=None,
+        note_valid=True,
+        return_default_used=False,
     ):
         return self.getlists(
             option,
@@ -185,10 +201,17 @@ class ConfigWrapper:
             count=count,
             parser=str,
             note_valid=note_valid,
+            return_default_used=return_default_used,
         )
 
     def getintlist(
-        self, option, default=sentinel, sep=",", count=None, note_valid=True
+        self,
+        option,
+        default=sentinel,
+        sep=",",
+        count=None,
+        note_valid=True,
+        return_default_used=False,
     ):
         return self.getlists(
             option,
@@ -197,10 +220,17 @@ class ConfigWrapper:
             count=count,
             parser=int,
             note_valid=note_valid,
+            return_default_used=return_default_used,
         )
 
     def getfloatlist(
-        self, option, default=sentinel, sep=",", count=None, note_valid=True
+        self,
+        option,
+        default=sentinel,
+        sep=",",
+        count=None,
+        note_valid=True,
+        return_default_used=False,
     ):
         return self.getlists(
             option,
@@ -209,6 +239,7 @@ class ConfigWrapper:
             count=count,
             parser=float,
             note_valid=note_valid,
+            return_default_used=return_default_used,
         )
 
     def getsection(self, section):
@@ -251,7 +282,7 @@ class ConfigWrapper:
         pconfig.deprecate(self.section, option, value, msg)
 
 
-AUTOSAVE_HEADER = """
+AUTOSAVE_HEADER = """_get_wrapper
 #*# <---------------------- SAVE_CONFIG ---------------------->
 #*# DO NOT EDIT THIS BLOCK OR BELOW. The contents are auto-generated.
 #*#
