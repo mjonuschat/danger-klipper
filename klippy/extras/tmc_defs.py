@@ -23,8 +23,3 @@ STEPSTICK_SENSE_RESISTORS = {
     "WATTEROTT_5160": 0.075,
     "WATTEROTT_5160_HV": 0.075,
 }
-
-
-def step_driver_fetch(config):
-    stepper_driver_type = config.get("stepstick_type")
-    return STEPSTICK_SENSE_RESISTORS.get(stepper_driver_type)
