@@ -252,10 +252,10 @@ MAX_CURRENT = 10.000  # Maximum dependent on board, but 10 is safe sanity check
 
 
 class TMC5160CurrentHelper(tmc.BaseTMCCurrentHelper):
-    def __init__(self, config, mcu_tmc):
-        super().__init__(config, mcu_tmc, MAX_CURRENT)
+    DEFAULT_SENSE_RESISTOR = 0.075
 
-        self.DEFAULT_SENSE_RESISTOR = 0.075
+    def __init__(self, config, mcu_tmc):
+        super().__init__(config, mcu_tmc, MAX_CURRENT, self.sense_resistor)
 
         gscaler, irun, ihold = self._calc_current(
             self.req_run_current, self.req_hold_current
