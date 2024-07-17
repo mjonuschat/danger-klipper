@@ -2,6 +2,13 @@
 
 This page contains information to assist in defining the 'stepstick_type' config entry. If your driver is not on here, simply do not specify 'stepstick_type', and manually enter 'sense_resistor'.
 
+In stock Klipper behavior, selecting a driver automatically uses the TMC definitions' default sense resistor. While this is usually fine, it can cause issues with driver boards that have unconventional sense resistor sizes, leading to incorrect current values being set.
+
+The goal of these changes to DangerKlipper is to allow you to set custom sense resistor and max current values for your stepper drivers. This results in more accurate configurations for your setup and enhances safety.
+
+In practice, you should set your driver using `stepstick_type`. If you need to override the default value, you can then use `sense_resistor`. Additionally, `stepstick_type` is not required to use `sense_resistor`. If neither `stipstick_type` or `sense_resistor` is set, the default
+Klipper behavior of using the TMC default value will be used (i.e. 0.075 for 5160).
+
 > [!NOTE]
 > Drivers with variable sense resistors (such as the FYSETC EXT2160) have not been defined and have been left out of the table intentionally. You must set sense resistor for them manually.
 
@@ -25,7 +32,7 @@ This page contains information to assist in defining the 'stepstick_type' config
 | BTT_EZ_5160_RGB        | 0.05           | 4.7         |
 | BTT_EZ_6609            | 0.11           | 2           |
 | BTT_EXT_5160           | 0.022          | 10.6        |
-| MELLOW_FLY_HV-TMC5160 Pro | 0.033       | 6           |
+| MELLOW_FLY_HV_5160_Pro | 0.033          | 6           |
 | COREVUS_2209           | 0.1            | 3           |
 | COREVUS_2160_OLD       | 0.03           | 3           |
 | COREVUS_2160_5A        | 0.03           | 5           |
