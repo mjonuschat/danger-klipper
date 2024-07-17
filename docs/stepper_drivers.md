@@ -45,7 +45,6 @@ This page contains information to assist in defining the 'stepstick_type' config
 | FYSETC_HV5160          | 0.075          | 3           |
 | FYSETC_QHV5160         | 0.075          | 3           |
 | FYSETC_5161            | 0.06           | 3.5         |
-| MKS_A4988              | 0.05           | 2           |
 | MKS_GC6609             | 0.11           | 2           |
 | MKS_2130               | 0.11           | 2           |
 | MKS_2208               | 0.11           | 2           |
