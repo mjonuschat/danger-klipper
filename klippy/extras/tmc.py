@@ -772,9 +772,10 @@ class BaseTMCCurrentHelper:
         self.fields = mcu_tmc.get_fields()
 
         stepper_driver_type = config.get("stepstick_type", None)
-
+        logging.info(stepper_driver_type)
+        logging.info(str(tmc_defs.STEPSTICK_DEFS.get("BTT_5160")))
         sense_resistor_from_driver, step_driver_max_current = (
-            tmc_defs.STEPSTICK_DEFS.get(stepper_driver_type)
+            tmc_defs.STEPSTICK_DEFS.get(stepper_driver_type, (None, None))
         )
 
         override_sense_resistor = config.getfloat(
