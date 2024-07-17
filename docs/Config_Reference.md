@@ -3873,7 +3873,7 @@ run_current:
 #   to define a more accurate max current, and also the proper sense
 #   resistor value. sense_resistor config entry overwrites a sense
 #   resistor value defined by this entry.
-#   See the stepper_drivers.md document for more details on each driver.
+#   (See the Stepstick_Types.md document for more details on each driver)
 #stealthchop_threshold: 0
 #   The velocity (in mm/s) to set the "stealthChop" threshold to. When
 #   set, "stealthChop" mode will be enabled if the stepper motor
@@ -3990,7 +3990,7 @@ run_current:
 #   to define a more accurate max current, and also the proper sense
 #   resistor value. sense_resistor config entry overwrites a sense
 #   resistor value defined by this entry.
-#   See the stepper_drivers.md document for more details on each driver.
+#   (See the Stepstick_Types.md document for more details on each driver)
 #stealthchop_threshold: 0
 #   The velocity (in mm/s) to set the "stealthChop" threshold to. When
 #   set, "stealthChop" mode will be enabled if the stepper motor
@@ -4041,7 +4041,7 @@ run_current:
 #   to define a more accurate max current, and also the proper sense
 #   resistor value. sense_resistor config entry overwrites a sense
 #   resistor value defined by this entry.
-#   See the stepper_drivers.md document for more details on each driver.
+#   (See the Stepstick_Types.md document for more details on each driver)
 #stealthchop_threshold: 0
 #   See the "tmc2208" section for the definition of these parameters.
 #coolstep_threshold:
@@ -4130,7 +4130,7 @@ run_current:
 #   to define a more accurate max current, and also the proper sense
 #   resistor value. sense_resistor config entry overwrites a sense
 #   resistor value defined by this entry.
-#   See the stepper_drivers.md document for more details on each driver.
+#   (See the Stepstick_Types.md document for more details on each driver)
 #idle_current_percent: 100
 #   The percentage of the run_current the stepper driver will be
 #   lowered to when the idle timeout expires (you need to set up the
@@ -4361,7 +4361,7 @@ run_current:
 #   to define a more accurate max current, and also the proper sense
 #   resistor value. sense_resistor config entry overwrites a sense
 #   resistor value defined by this entry.
-#   See the stepper_drivers.md document for more details on each driver.
+#   (See the Stepstick_Types.md document for more details on each driver)
 #stealthchop_threshold: 0
 #   The velocity (in mm/s) to set the "stealthChop" threshold to. When
 #   set, "stealthChop" mode will be enabled if the stepper motor
