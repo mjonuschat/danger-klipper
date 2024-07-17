@@ -16,7 +16,7 @@ STEPSTICK_DEFS = {
     "BTT_EZ_5160_RGB": (0.05, 4.7),
     "BTT_EZ_6609": (0.11, 2),
     "BTT_5160T": (0.022, 10.6),
-    "MELLOW_FLY_HV-TMC5160 Pro": (0.033, 6),
+    "MELLOW_FLY_HV_5160_Pro": (0.033, 6),
     "COREVUS_2209": (0.1, 3),
     "COREVUS_2160_OLD": (0.03, 3),
     "COREVUS_2160_5A": (0.03, 5),
