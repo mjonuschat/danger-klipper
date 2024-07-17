@@ -1,6 +1,6 @@
 # Stepper Driver Definitions
 
-This page contains information to assist in defining the 'stepstick_type' config entry.
+This page contains information to assist in defining the `stepstick_type` config entry.
 
 In stock Klipper behavior, selecting a driver automatically uses the TMC definitions' default sense resistor. While this is usually fine, it can cause issues with driver boards that have unconventional sense resistor sizes, leading to incorrect current values being set.
 
