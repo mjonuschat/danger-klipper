@@ -802,14 +802,7 @@ class BaseTMCCurrentHelper:
 
         logging.warning(self.sense_resistor)
 
-        step_driver_max_current_override = config.getboolean(
-            "step_driver_max_current_override", False
-        )
-
-        if (
-            step_driver_max_current is not None
-            and step_driver_max_current_override is False
-        ):
+        if step_driver_max_current is not None:
             max_current = step_driver_max_current
 
         # config_{run|hold|home}_current
