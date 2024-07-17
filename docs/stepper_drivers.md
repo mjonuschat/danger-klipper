@@ -7,7 +7,7 @@ In stock Klipper behavior, selecting a driver automatically uses the TMC definit
 The goal of these changes to DangerKlipper is to allow you to set custom sense resistor and max current values for your stepper drivers. This results in more accurate configurations for your setup and enhances safety.
 
 
-##Use
+## Use
 In practice, you should set your driver using `stepstick_type`. If you need to override the default value, you can then use `sense_resistor`. Additionally, `stepstick_type` is not required to use `sense_resistor`. If neither `stipstick_type` or `sense_resistor` is set, the default
 Klipper behavior of using the TMC default value will be used (i.e. 0.075 for 5160).
 
