@@ -388,7 +388,6 @@ class TMCCommandHelper:
                 prev_cur,
                 prev_hold_cur,
                 req_hold_cur,
-                max_cur,
                 prev_home_cur,
             ) = ch.get_current()
         # Report values
@@ -786,9 +785,6 @@ class BaseTMCCurrentHelper:
             override_sense_resistor is None
             and sense_resistor_from_driver is None
         ):
-            logging.warning(
-                "No sense resistor or driver type defined for %s", self.name
-            )
             self.sense_resistor = self.DEFAULT_SENSE_RESISTOR
             self.config_file.warn(
                 "config",
@@ -802,8 +798,6 @@ class BaseTMCCurrentHelper:
             self.sense_resistor = (
                 override_sense_resistor or sense_resistor_from_driver
             )
-
-        logging.warning(self.sense_resistor)
 
         max_current = step_driver_max_current or self.DEFAULT_MAX_CURRENT
 

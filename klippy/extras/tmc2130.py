@@ -241,7 +241,7 @@ class TMC2130CurrentHelper(tmc.BaseTMCCurrentHelper):
         ihold = self._calc_current_bits(min(hold_current, run_current), vsense)
         return vsense, irun, ihold
 
-    def get_current(self, MAX_CURRENT):
+    def get_current(self):
         irun = self.fields.get_field("irun")
         ihold = self.fields.get_field("ihold")
         vsense = self.fields.get_field("vsense")
@@ -251,7 +251,6 @@ class TMC2130CurrentHelper(tmc.BaseTMCCurrentHelper):
             run_current,
             hold_current,
             self.req_hold_current,
-            self.MAX_CURRENT,
             self.req_home_current,
         )
 

@@ -190,7 +190,6 @@ class TMC2660CurrentHelper(tmc.BaseTMCCurrentHelper):
             self.req_run_current,
             None,
             None,
-            self.MAX_CURRENT,
             self.req_home_current,
         )
 

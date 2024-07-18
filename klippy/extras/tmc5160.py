@@ -313,7 +313,6 @@ class TMC5160CurrentHelper(tmc.BaseTMCCurrentHelper):
             run_current,
             hold_current,
             self.req_hold_current,
-            self.MAX_CURRENT,
             self.req_home_current,
         )
 
