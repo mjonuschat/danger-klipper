@@ -198,12 +198,11 @@ MAX_CURRENT = 2.000
 
 
 class TMC2130CurrentHelper(tmc.BaseTMCCurrentHelper):
+    DEFAULT_SENSE_RESISTOR = 0.110
+
     def __init__(self, config, mcu_tmc):
         super().__init__(config, mcu_tmc, MAX_CURRENT)
 
-        self.sense_resistor = config.getfloat(
-            "sense_resistor", 0.110, above=0.0
-        )
         vsense, irun, ihold = self._calc_current(
             self.req_run_current, self.req_hold_current
         )

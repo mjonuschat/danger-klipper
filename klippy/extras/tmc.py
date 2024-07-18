@@ -5,6 +5,7 @@
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import logging, collections
 import stepper
+from . import stepstick_defs
 
 
 ######################################################################
@@ -766,9 +767,44 @@ def TMCStealthchopHelper(config, mcu_tmc, tmc_freq):
 class BaseTMCCurrentHelper:
     def __init__(self, config, mcu_tmc, max_current):
         self.printer = config.get_printer()
+        self.config_file = self.printer.lookup_object("configfile")
         self.name = config.get_name().split()[-1]
         self.mcu_tmc = mcu_tmc
         self.fields = mcu_tmc.get_fields()
+
+        stepper_driver_type = config.get("stepstick_type", None)
+        sense_resistor_from_driver, step_driver_max_current = (
+            stepstick_defs.STEPSTICK_DEFS.get(stepper_driver_type, (None, None))
+        )
+
+        override_sense_resistor = config.getfloat(
+            "sense_resistor",
+            None,
+            minval=0.0,
+        )
+        if (
+            override_sense_resistor is None
+            and sense_resistor_from_driver is None
+        ):
+            logging.warning(
+                "No sense resistor or driver type defined for %s", self.name
+            )
+            self.sense_resistor = self.DEFAULT_SENSE_RESISTOR
+            self.config_file.warn(
+                "config",
+                f"[{self.name}] 'stepper_driver_type' or 'sense_resistor' is not defined, Using default value of {self.sense_resistor} ohm sense resistor. If this is incorrect, your drivers or board may be damaged.",
+                "sense_resistor",
+            )
+
+        else:
+            self.sense_resistor = (
+                override_sense_resistor or sense_resistor_from_driver
+            )
+
+        logging.warning(self.sense_resistor)
+
+        if step_driver_max_current is not None:
+            max_current = step_driver_max_current
 
         # config_{run|hold|home}_current
         # represents an initial value set via config file
