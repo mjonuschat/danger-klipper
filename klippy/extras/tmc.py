@@ -765,7 +765,7 @@ def TMCStealthchopHelper(config, mcu_tmc, tmc_freq):
 
 
 class BaseTMCCurrentHelper:
-    def __init__(self, config, mcu_tmc, max_current):
+    def __init__(self, config, mcu_tmc):
         self.printer = config.get_printer()
         self.config_file = self.printer.lookup_object("configfile")
         self.name = config.get_name().split()[-1]
@@ -792,7 +792,9 @@ class BaseTMCCurrentHelper:
             self.sense_resistor = self.DEFAULT_SENSE_RESISTOR
             self.config_file.warn(
                 "config",
-                f"[{self.name}] 'stepper_driver_type' or 'sense_resistor' is not defined, Using default value of {self.sense_resistor} ohm sense resistor. If this is incorrect, your drivers or board may be damaged.",
+                f"""Neither 'stepper_driver_type' or 'sense_resistor' is defined for [{self.name}].
+                Using default value of {self.sense_resistor} ohm sense resistor.
+                If this is incorrect, your drivers or board may be damaged.""",
                 "sense_resistor",
             )
 
@@ -803,8 +805,7 @@ class BaseTMCCurrentHelper:
 
         logging.warning(self.sense_resistor)
 
-        if step_driver_max_current is not None:
-            max_current = step_driver_max_current
+        max_current = step_driver_max_current or self.DEFAULT_MAX_CURRENT
 
         # config_{run|hold|home}_current
         # represents an initial value set via config file

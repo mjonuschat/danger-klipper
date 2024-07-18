@@ -34,7 +34,6 @@ Klipper behavior of using the TMC default value will be used (i.e. 0.075 for 516
 | BTT EZ5160 RGB                          | BTT_EZ_5160_RGB         | 0.05           | 4.7         |
 | BTT EZ6609                              | BTT_EZ_6609             | 0.11           | 2           |
 | BTT TMC5160T Plus                       | BTT_EXT_5160            | 0.022          | 10.6        |
-| FLY HV-TMC5160 Pro                      | MELLOW_FLY_HV_5160_Pro  | 0.033          | 6           |
 | COREVUS TMC2209                         | COREVUS_2209            | 0.1            | 3           |
 | COREVUS TMC2160 OLD                     | COREVUS_2160_OLD        | 0.03           | 3           |
 | COREVUS TMC2160 5A                      | COREVUS_2160_5A         | 0.03           | 5           |
@@ -54,10 +53,12 @@ Klipper behavior of using the TMC default value will be used (i.e. 0.075 for 516
 | FYSETC HV5160                           | FYSETC_HV5160           | 0.075          | 3           |
 | FYSETC QHV5160                          | FYSETC_QHV5160          | 0.075          | 3           |
 | FYSETC Silent5161                       | FYSETC_5161             | 0.06           | 3.5         |
-| MKS GC6609                              | MKS_GC6609              | 0.11           | 2           |
 | MKS 2130                                | MKS_2130                | 0.11           | 2           |
 | MKS 2208                                | MKS_2208                | 0.11           | 2           |
 | MKS 2209                                | MKS_2209                | 0.11           | 2           |
 | MKS 2225                                | MKS_2225                | 0.11           | 2           |
 | MKS 2226                                | MKS_2226                | 0.17           | 2.5         |
 | MKS 2240                                | MKS_2240                | 0.11           | 2.1         |
+| Mellow Fly 2209                         | MELLOW_2209             | 0.11           | 2           |
+| Mellow Fly 5160                         | MELLOW_2209             | 0.11           | 3           |
+| Mellow Fly HV-TMC5160 Pro               | MELLOW_FLY_HV_5160_Pro  | 0.033          | 6           |

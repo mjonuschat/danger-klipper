@@ -111,12 +111,12 @@ FieldFormatters.update(
 # TMC stepper current config helper
 ######################################################################
 
-MAX_CURRENT = 2.400
-
 
 class TMC2660CurrentHelper(tmc.BaseTMCCurrentHelper):
+    DEFAULT_MAX_CURRENT = 2.400
+
     def __init__(self, config, mcu_tmc):
-        super().__init__(config, mcu_tmc, MAX_CURRENT)
+        super().__init__(config, mcu_tmc)
 
         self.current = self.req_run_current
 
@@ -190,7 +190,7 @@ class TMC2660CurrentHelper(tmc.BaseTMCCurrentHelper):
             self.req_run_current,
             None,
             None,
-            MAX_CURRENT,
+            self.MAX_CURRENT,
             self.req_home_current,
         )
 
