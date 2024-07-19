@@ -350,12 +350,9 @@ class TMCCommandHelper:
     def cmd_SET_TMC_CURRENT(self, gcmd):
         ch = self.current_helper
         max_current = ch.get_max_current()
-        (
-            prev_cur,
-            prev_hold_cur,
-            req_hold_cur,
-            prev_home_cur,
-        ) = ch.get_current()
+        (prev_cur, prev_hold_cur, req_hold_cur, prev_home_cur) = (
+            ch.get_current()
+        )
         run_current = gcmd.get_float(
             "CURRENT", None, minval=0.0, maxval=max_current
         )
@@ -384,12 +381,9 @@ class TMCCommandHelper:
             toolhead = self.printer.lookup_object("toolhead")
             print_time = toolhead.get_last_move_time()
             ch.set_current(run_current, hold_current, print_time)
-            (
-                prev_cur,
-                prev_hold_cur,
-                req_hold_cur,
-                prev_home_cur,
-            ) = ch.get_current()
+            (prev_cur, prev_hold_cur, req_hold_cur, prev_home_cur) = (
+                ch.get_current()
+            )
         # Report values
         if prev_hold_cur is None:
             gcmd.respond_info(
