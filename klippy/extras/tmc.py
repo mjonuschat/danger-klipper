@@ -353,17 +353,17 @@ class TMCCommandHelper:
             prev_cur,
             prev_hold_cur,
             req_hold_cur,
-            max_cur,
+            self.max_current,
             prev_home_cur,
         ) = ch.get_current()
         run_current = gcmd.get_float(
-            "CURRENT", None, minval=0.0, maxval=max_cur
+            "CURRENT", None, minval=0.0, maxval=self.max_current
         )
         hold_current = gcmd.get_float(
-            "HOLDCURRENT", None, above=0.0, maxval=max_cur
+            "HOLDCURRENT", None, above=0.0, maxval=self.max_current
         )
         home_current = gcmd.get_float(
-            "HOMECURRENT", None, above=0.0, maxval=max_cur
+            "HOMECURRENT", None, above=0.0, maxval=self.max_current
         )
         if (
             run_current is not None
