@@ -844,13 +844,28 @@ class BaseTMCCurrentHelper:
         return needs
 
     def set_home_current(self, new_home_current):
-        self.req_home_current = min(new_home_current, self.max_current)
+        self.req_home_current = min(
+            new_home_current
+            if new_home_current is not None
+            else self.max_current,
+            self.max_current,
+        )
 
     def set_run_current(self, new_run_current):
-        self.req_run_current = min(new_run_current, self.max_current)
+        self.req_run_current = min(
+            new_run_current
+            if new_run_current is not None
+            else self.max_current,
+            self.max_current,
+        )
 
     def set_hold_current(self, new_hold_current):
-        self.req_hold_current = min(new_hold_current, self.max_current)
+        self.req_hold_current = min(
+            new_hold_current
+            if new_hold_current is not None
+            else self.max_current,
+            self.max_current,
+        )
 
     def set_actual_current(self, current):
         self.actual_current = current
