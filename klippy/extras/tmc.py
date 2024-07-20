@@ -372,26 +372,24 @@ class TMCCommandHelper:
             )
             return
 
-        run_current = run_current if run_current is not None else prev_cur
-        hold_current = (
-            hold_current if hold_current is not None else prev_hold_cur
-        )
-        home_current = (
-            home_current if home_current is not None else prev_home_cur
-        )
-
-        ch.set_run_current(run_current)
-        ch.set_hold_current(hold_current)
-        ch.set_home_current(home_current)
+        ch.set_run_current(run_current or prev_cur)
+        ch.set_hold_current(hold_current or prev_hold_cur)
+        ch.set_home_current(home_current or prev_home_cur)
 
         toolhead = self.printer.lookup_object("toolhead")
         print_time = toolhead.get_last_move_time()
         ch.set_current(run_current, hold_current, print_time)
 
-        gcmd.respond_info(
-            "Run Current: %0.2fA Hold Current: %0.2fA Home Current: %0.2fA"
-            % (run_current, hold_current, home_current)
-        )
+        if prev_hold_cur is None:
+            gcmd.respond_info(
+                "Run Current: %0.2fA Home Current: %0.2fA"
+                % (prev_cur, prev_home_cur)
+            )
+        else:
+            gcmd.respond_info(
+                "Run Current: %0.2fA Hold Current: %0.2fA Home Current: %0.2fA"
+                % (run_current, hold_current, home_current)
+            )
 
     # Stepper phase tracking
     def _get_phases(self):
@@ -844,28 +842,13 @@ class BaseTMCCurrentHelper:
         return needs
 
     def set_home_current(self, new_home_current):
-        self.req_home_current = min(
-            new_home_current
-            if new_home_current is not None
-            else self.max_current,
-            self.max_current,
-        )
+        self.req_home_current = min(new_home_current, self.max_current)
 
     def set_run_current(self, new_run_current):
-        self.req_run_current = min(
-            new_run_current
-            if new_run_current is not None
-            else self.max_current,
-            self.max_current,
-        )
+        self.req_run_current = min(new_run_current, self.max_current)
 
     def set_hold_current(self, new_hold_current):
-        self.req_hold_current = min(
-            new_hold_current
-            if new_hold_current is not None
-            else self.max_current,
-            self.max_current,
-        )
+        self.req_hold_current = min(new_hold_current, self.max_current)
 
     def set_actual_current(self, current):
         self.actual_current = current
