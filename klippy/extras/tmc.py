@@ -350,9 +350,8 @@ class TMCCommandHelper:
     def cmd_SET_TMC_CURRENT(self, gcmd):
         ch = self.current_helper
         max_current = ch.get_max_current()
-        (prev_cur, prev_hold_cur, req_hold_cur, prev_home_cur) = (
-            ch.get_current()
-        )
+        prev_cur, prev_hold_cur, req_hold_cur, prev_home_cur = ch.get_current()
+
         run_current = gcmd.get_float(
             "CURRENT", None, minval=0.0, maxval=max_current
         )
@@ -362,39 +361,37 @@ class TMCCommandHelper:
         home_current = gcmd.get_float(
             "HOMECURRENT", None, above=0.0, maxval=max_current
         )
+
         if (
-            run_current is not None
-            or hold_current is not None
-            or home_current is not None
+            run_current is None
+            and hold_current is None
+            and home_current is None
         ):
-            if run_current is not None:
-                ch.set_run_current(run_current)
-            else:
-                run_current = prev_cur
-
-            if hold_current is None:
-                hold_current = req_hold_cur
-
-            if home_current is not None:
-                ch.set_home_current(home_current)
-
-            toolhead = self.printer.lookup_object("toolhead")
-            print_time = toolhead.get_last_move_time()
-            ch.set_current(run_current, hold_current, print_time)
-            (prev_cur, prev_hold_cur, req_hold_cur, prev_home_cur) = (
-                ch.get_current()
-            )
-        # Report values
-        if prev_hold_cur is None:
             gcmd.respond_info(
-                "Run Current: %0.2fA Home Current: %0.2fA"
-                % (prev_cur, prev_home_cur)
+                "Error: You must specify at least one of CURRENT, HOLDCURRENT, or HOMECURRENT"
             )
-        else:
-            gcmd.respond_info(
-                "Run Current: %0.2fA Hold Current: %0.2fA Home Current: %0.2fA"
-                % (prev_cur, prev_hold_cur, prev_home_cur)
-            )
+            return
+
+        run_current = run_current if run_current is not None else prev_cur
+        hold_current = (
+            hold_current if hold_current is not None else prev_hold_cur
+        )
+        home_current = (
+            home_current if home_current is not None else prev_home_cur
+        )
+
+        ch.set_run_current(run_current)
+        ch.set_hold_current(hold_current)
+        ch.set_home_current(home_current)
+
+        toolhead = self.printer.lookup_object("toolhead")
+        print_time = toolhead.get_last_move_time()
+        ch.set_current(run_current, hold_current, print_time)
+
+        gcmd.respond_info(
+            "Run Current: %0.2fA Hold Current: %0.2fA Home Current: %0.2fA"
+            % (run_current, hold_current, home_current)
+        )
 
     # Stepper phase tracking
     def _get_phases(self):
@@ -847,13 +844,13 @@ class BaseTMCCurrentHelper:
         return needs
 
     def set_home_current(self, new_home_current):
-        self.req_home_current = min(self.max_current, new_home_current)
+        self.req_home_current = min(new_home_current, self.max_current)
 
     def set_run_current(self, new_run_current):
-        self.req_run_current = min(self.max_current, new_run_current)
+        self.req_run_current = min(new_run_current, self.max_current)
 
     def set_hold_current(self, new_hold_current):
-        self.req_hold_current = new_hold_current
+        self.req_hold_current = min(new_hold_current, self.max_current)
 
     def set_actual_current(self, current):
         self.actual_current = current
