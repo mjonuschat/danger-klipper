@@ -896,6 +896,15 @@ class BaseTMCCurrentHelper:
         logging.info(f"tmc {self.name}: needs_hold_current_change {needs}")
         return needs
 
+    def set_home_current(self, new_home_current):
+        self.req_home_current = min(self.max_current, new_home_current)
+
+    def set_run_current(self, new_run_current):
+        self.req_run_current = min(self.max_current, new_run_current)
+
+    def set_hold_current(self, new_hold_current):
+        self.req_hold_current = new_hold_current
+
     def set_actual_current(self, current):
         self.actual_current = current
         logging.info(
