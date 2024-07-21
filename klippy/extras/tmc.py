@@ -347,95 +347,39 @@ class TMCCommandHelper:
 
     cmd_SET_TMC_CURRENT_help = "Set the current of a TMC driver"
 
-    # def cmd_SET_TMC_CURRENT(self, gcmd):
-    #     ch = self.current_helper
-    #     max_current = ch.get_max_current()
-    #     prev_cur, prev_hold_cur, req_hold_cur, prev_home_cur = ch.get_current()
-
-    #     run_current = gcmd.get_float(
-    #         "CURRENT", None, minval=0.0, maxval=max_current
-    #     )
-    #     hold_current = gcmd.get_float(
-    #         "HOLDCURRENT", None, above=0.0, maxval=max_current
-    #     )
-    #     home_current = gcmd.get_float(
-    #         "HOMECURRENT", None, above=0.0, maxval=max_current
-    #     )
-
-    #     if (
-    #         run_current is None
-    #         and hold_current is None
-    #         and home_current is None
-    #     ):
-    #         gcmd.respond_info(
-    #             "Error: You must specify at least one of CURRENT, HOLDCURRENT, or HOMECURRENT"
-    #         )
-    #         return
-
-    #     ch.set_run_current(run_current or prev_cur)
-    #     ch.set_hold_current(hold_current or prev_hold_cur)
-    #     ch.set_home_current(home_current or prev_home_cur)
-
-    #     toolhead = self.printer.lookup_object("toolhead")
-    #     print_time = toolhead.get_last_move_time()
-    #     ch.set_current(run_current, hold_current, print_time)
-
-    #     if prev_hold_cur is None:
-    #         gcmd.respond_info(
-    #             "Run Current: %0.2fA Home Current: %0.2fA"
-    #             % (run_current, home_current)
-    #         )
-    #     else:
-    #         gcmd.respond_info(
-    #             "Run Current: %0.2fA Hold Current: %0.2fA Home Current: %0.2fA"
-    #             % (run_current, hold_current, home_current)
-    #         )
-
     def cmd_SET_TMC_CURRENT(self, gcmd):
         ch = self.current_helper
-        max_current = ch.get_max_current()
         (
-            prev_cur,
-            prev_hold_cur,
-            req_hold_cur,
-            prev_home_cur,
+            run_current,
+            hold_current,
+            req_hold_current,
+            home_current,
         ) = ch.get_current()
-        run_current = gcmd.get_float(
+        max_current = ch.get_max_current()
+        cmd_run_current = gcmd.get_float(
             "CURRENT", None, minval=0.0, maxval=max_current
         )
-        hold_current = gcmd.get_float(
+        cmd_hold_current = gcmd.get_float(
             "HOLDCURRENT", None, above=0.0, maxval=max_current
         )
-        home_current = gcmd.get_float(
+        cmd_home_current = gcmd.get_float(
             "HOMECURRENT", None, above=0.0, maxval=max_current
         )
-        if (
-            run_current is not None
-            or hold_current is not None
-            or home_current is not None
-        ):
-            if run_current is not None:
-                ch.set_run_current(run_current)
-            else:
-                run_current = prev_cur
+        if cmd_run_current:
+            run_current = cmd_run_current
+            ch.set_run_current(run_current)
+        if cmd_hold_current:
+            hold_current = cmd_hold_current
+            ch.set_hold_current(hold_current)
+        if cmd_home_current:
+            home_current = cmd_home_current
+            ch.set_home_current(home_current)
 
-            if hold_current is None:
-                hold_current = req_hold_cur
-
-            if home_current is not None:
-                ch.set_home_current(home_current)
-
-            toolhead = self.printer.lookup_object("toolhead")
-            print_time = toolhead.get_last_move_time()
-            ch.set_current(run_current, hold_current, print_time)
-            (
-                prev_cur,
-                prev_hold_cur,
-                req_hold_cur,
-                prev_home_cur,
-            ) = ch.get_current()
+        toolhead = self.printer.lookup_object("toolhead")
+        print_time = toolhead.get_last_move_time()
+        ch.apply_run_current(print_time)
         # Report values
-        if prev_hold_cur is None:
+        if hold_current is None:
             gcmd.respond_info(
                 "Run Current: %0.2fA Home Current: %0.2fA"
                 % (run_current, home_current)
@@ -875,7 +819,6 @@ class BaseTMCCurrentHelper:
         # It fluctuates between req_run_current and req_home_current
         # during homing
         self.actual_current = self.req_run_current
-
         self.max_current = max_current
 
     def get_max_current(self):
@@ -895,6 +838,13 @@ class BaseTMCCurrentHelper:
         needs = hold_current != self.req_run_current
         logging.info(f"tmc {self.name}: needs_hold_current_change {needs}")
         return needs
+
+    def apply_run_current(self, print_time):
+        if self.needs_current_changes(
+            self.req_run_current, self.req_hold_current
+        ):
+            self.set_actual_current(self.req_run_current)
+            self.apply_current(print_time)
 
     def set_home_current(self, new_home_current):
         self.req_home_current = min(self.max_current, new_home_current)

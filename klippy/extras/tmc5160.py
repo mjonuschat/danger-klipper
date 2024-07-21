@@ -257,9 +257,6 @@ class TMC5160CurrentHelper(tmc.BaseTMCCurrentHelper):
     def __init__(self, config, mcu_tmc):
         super().__init__(config, mcu_tmc)
 
-        self.sense_resistor = config.getfloat(
-            "sense_resistor", 0.075, above=0.0
-        )
         gscaler, irun, ihold = self._calc_current(
             self.req_run_current, self.req_hold_current
         )
