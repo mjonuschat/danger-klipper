@@ -20,10 +20,10 @@ Klipper behavior of using the TMC default value will be used (i.e. 0.075 for 516
 | BTT Kraken S1-4                         | KRAKEN_2160_8A          | 0.022          | 8           |
 | BTT Kraken S5-8                         | KRAKEN_2160_3A          | 0.022          | 3           |
 | LDO Leviathan HV0,HV1                   | REFERENCE_5160          | 0.075          | 3           |
-| LDO Leviathan S0-4                      | LEVIATHAN_2209          | 0.11           | 2           |
+| LDO Leviathan S0-4                      | REFERENCE_2209          | 0.11           | 2           |
 | BTT TMC2208                             | REFERENCE_2209          | 0.11           | 2           |
 | BTT TMC2209                             | REFERENCE_2209          | 0.11           | 2           |
-| BTT TMC2240                             | BTT_2240                | 0.11           | 2         |
+| BTT TMC2240                             | BTT_2240                | 0.11           | 2           |
 | BTT TMC5160T Pro                        | REFERENCE_5160          | 0.075          | 3           |
 | BTT EZ2130                              | REFERENCE_2209          | 0.11           | 2           |
 | BTT EZ2208                              | REFERENCE_2209          | 0.11           | 2           |
@@ -41,23 +41,23 @@ Klipper behavior of using the TMC default value will be used (i.e. 0.075 for 516
 | Watterott SilentStepStick TMC2100       | REFERENCE_WOTT          | 0.11           | 1.2         |
 | Watterott SilentStepStick TMC2130       | REFERENCE_WOTT          | 0.11           | 1.2         |
 | Watterott SilentStepStick TMC2208       | REFERENCE_WOTT          | 0.11           | 1.2         |
-| Watterott SilentStepStick TMC2209       | REFERENCE_2209          | 0.11           | 1.7         |
+| Watterott SilentStepStick TMC2209       | WOTT_2209               | 0.11           | 1.7         |
 | Watterott SilentStepStick TMC5160       | REFERENCE_5160          | 0.075          | 3           |
 | Watterott SilentStepStick TMC5160HV     | REFERENCE_5160          | 0.075          | 3           |
 | FYSETC TMC2100                          | REFERENCE_WOTT          | 0.11           | 1.2         |
 | FYSETC TMC2130                          | REFERENCE_WOTT          | 0.11           | 1.2         |
 | FYSETC TMC2208                          | REFERENCE_WOTT          | 0.11           | 1.2         |
-| FYSETC TMC2209                          | FYSETC_2209             | 0.11           | 1.7         |
+| FYSETC TMC2209                          | WOTT_2209               | 0.11           | 1.7         |
 | FYSETC TMC2225                          | FYSETC_2225             | 0.11           | 1.4         |
 | FYSETC TMC2226                          | REFERENCE_2209          | 0.11           | 2           |
-| FYSETC HV5160                           | FYSETC_HV5160           | 0.075          | 3           |
+| FYSETC HV5160                           | REFERENCE_5160          | 0.075          | 3           |
 | FYSETC QHV5160                          | REFERENCE_5160          | 0.075          | 3           |
-| FYSETC Silent5161                       | REFERENCE_5160          | 0.06           | 3.5         |
+| FYSETC Silent5161                       | FYSETC_5161             | 0.06           | 3.5         |
 | MKS 2130                                | REFERENCE_2209          | 0.11           | 2           |
 | MKS 2208                                | REFERENCE_2209          | 0.11           | 2           |
 | MKS 2209                                | REFERENCE_2209          | 0.11           | 2           |
 | MKS 2225                                | REFERENCE_2209          | 0.11           | 2           |
-| MKS 2226                                | REFERENCE_2209          | 0.17           | 2.5         |
+| MKS 2226                                | MKS_2226                | 0.17           | 2.5         |
 | MKS 2240                                | REFERENCE_2209          | 0.11           | 2           |
 | Mellow Fly 2209                         | REFERENCE_2209          | 0.11           | 2           |
 | Mellow Fly 5160                         | MELLOW_FLY_5160         | 0.11           | 3           |
