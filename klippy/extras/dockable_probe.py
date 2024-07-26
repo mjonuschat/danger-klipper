@@ -225,6 +225,9 @@ class DockableProbe:
 
         # Macros to run before attach and after detach
         gcode_macro = self.printer.load_object(config, "gcode_macro")
+        self.post_detach_gcode = gcode_macro.load_template(
+            config, "post_detach_gcode", ""
+        )
         self.activate_gcode = gcode_macro.load_template(
             config, "activate_gcode", ""
         )
@@ -549,6 +552,8 @@ class DockableProbe:
 
         if self.get_probe_state() != PROBE_DOCKED:
             raise self.printer.command_error("Probe detach failed!")
+
+        self.post_detach_gcode.run_gcode_from_command()
 
         if return_pos and self.restore_toolhead:
             # return to the original XY position, if inside safe_dock area

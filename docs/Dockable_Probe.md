@@ -96,6 +96,21 @@ detach_position:
   The position of the toolhead is restored to the position prior to 
   the attach/detach movements. See table below.
 
+- `post_detach_gcode:`\
+ _Optional_\
+ If supplied, this gcode is run after moving away to the dock, but before
+  restoring position. It is intended to be general purpose/use case.
+
+- `activate_gcode:`\
+ _Optional_\
+ If supplied, this gcode is run after moving away to the dock, but after
+  restoring position (if defined). It is intended to be general purpose/use case.
+
+- `deactivate_gcode:`\
+ _Optional_\
+ If supplied, this gcode is run before moving to attach probe.
+  It is intended to be general purpose/use case.
+
 | Command                 | Module            | restore_th=True | restore_th=False | notes                          |
 | ----------------------- | ----------------- | --------------- | ---------------- | ------------------------------ |
 | ATTACH_PROBE            | dockable_probe.py | True            | False            |                                |
